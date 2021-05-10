@@ -1,8 +1,8 @@
 <?php
-namespace Opencart\Admin\Controller\Common;
+namespace Opencart\Admin\Controller\User;
 class Profile extends \Opencart\System\Engine\Controller {
 	public function index(): void {
-		$this->load->language('common/profile');
+		$this->load->language('user/profile');
 
 		$this->document->setTitle($this->language->get('heading_title'));
 
@@ -15,7 +15,7 @@ class Profile extends \Opencart\System\Engine\Controller {
 
 		$data['breadcrumbs'][] = [
 			'text' => $this->language->get('heading_title'),
-			'href' => $this->url->link('common/profile', 'user_token=' . $this->session->data['user_token'])
+			'href' => $this->url->link('user/profile', 'user_token=' . $this->session->data['user_token'])
 		];
 
 		$data['back'] = $this->url->link('common/dashboard', 'user_token=' . $this->session->data['user_token']);
@@ -68,11 +68,11 @@ class Profile extends \Opencart\System\Engine\Controller {
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
 
-		$this->response->setOutput($this->load->view('common/profile', $data));
+		$this->response->setOutput($this->load->view('user/profile', $data));
 	}
 
 	public function save(): void {
-		$this->load->language('common/profile');
+		$this->load->language('user/profile');
 
 		$json = [];
 

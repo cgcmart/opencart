@@ -3,15 +3,15 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title text-danger"><i class="fas fa-exclamation-triangle"></i> {{ heading_title }}</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-info"><i class="fas fa-exclamation-circle"></i> {{ text_security }}</div>
 				<form>
 					<fieldset>
 						<legend>{{ text_choose }}</legend>
-						<div class="form-group">
-							<select name="type" id="input-type" class="form-control">
+						<div class="mb-3">
+							<select name="type" id="input-type" class="form-select">
 								<option value="automatic">{{ text_automatic }}</option>
 								<option value="manual">{{ text_manual }}</option>
 							</select>
@@ -19,24 +19,20 @@
 					</fieldset>
 					<fieldset id="collapse-automatic" class="collapse">
 						<legend>{{ text_automatic }}</legend>
-						<div class="form-group">
-							<div class="input-group">
-								<div class="input-group-prepend dropdown">
-									<button type="button" id="button-path" data-bs-toggle="dropdown" class="btn btn-primary dropdown-toggle">{{ document_root }} <span class="fas fa-caret-down"></span></button>
-									<div class="dropdown-menu">
-										{% for path in paths %}
-											{% if path|length > document_root|length %}
-												<a href="{{ path }}" class="dropdown-item"><i class="fas fa-exclamation-triangle fa-fw text-danger"></i> {{ path }}</a>
-											{% else %}
-												<a href="{{ path }}" class="dropdown-item"><i class="fas fa-check-circle fa-fw text-success"></i> {{ path }}</a>
-											{% endif %}
-										{% endfor %}
-									</div>
+						<div class="mb-3">
+							<div class="input-group dropdown">
+								<button type="button" id="button-path" data-bs-toggle="dropdown" class="btn btn-primary dropdown-toggle">{{ document_root }} <span class="fas fa-caret-down"></span></button>
+								<div class="dropdown-menu">
+									{% for path in paths %}
+										{% if path|length > document_root|length %}
+											<a href="{{ path }}" class="dropdown-item"><i class="fas fa-exclamation-triangle fa-fw text-danger"></i> {{ path }}</a>
+										{% else %}
+											<a href="{{ path }}" class="dropdown-item"><i class="fas fa-check-circle fa-fw text-success"></i> {{ path }}</a>
+										{% endif %}
+									{% endfor %}
 								</div>
 								<input type="text" name="directory" value="storage" placeholder="{{ entry_directory }}" class="form-control"/>
-								<div class="input-group-append">
-									<button type="button" id="button-move" data-loading-text="{{ text_loading }}" class="btn btn-danger"><i class="fas fa-exclamation-triangle"></i> {{ button_move }}</button>
-								</div>
+								<button type="button" id="button-move" data-loading-text="{{ text_loading }}" class="btn btn-danger"><i class="fas fa-exclamation-triangle"></i> {{ button_move }}</button>
 							</div>
 							<input type="hidden" name="path" value="{{ document_root }}"/>
 						</div>
@@ -103,11 +99,11 @@ $('#button-move').on('click', function() {
             $('.alert-dismissible').remove();
 
             if (json['error']) {
-                $('#modal-security .modal-body').prepend('<div class="alert alert-danger alert-dismissible"><i class="fas fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                $('#modal-security .modal-body').prepend('<div class="alert alert-danger alert-dismissible"><i class="fas fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="btn-close" data-bs-dismiss="alert">&times;</button></div>');
             }
 
             if (json['success']) {
-                $('#modal-security .modal-body').prepend('<div class="alert alert-success alert-dismissible"><i class="fas fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                $('#modal-security .modal-body').prepend('<div class="alert alert-success alert-dismissible"><i class="fas fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="btn-close" data-bs-dismiss="alert">&times;</button></div>');
             }
         },
         error: function(xhr, ajaxOptions, thrownError) {

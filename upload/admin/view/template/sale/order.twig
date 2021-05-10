@@ -2,12 +2,12 @@
 <div id="content">
 	<div class="page-header">
 		<div class="container-fluid">
-			<div class="float-right">
+			<div class="float-end">
 				<button type="button" data-bs-toggle="tooltip" title="{{ button_filter }}" onclick="$('#filter-order').toggleClass('d-none');" class="btn btn-light d-lg-none"><i class="fas fa-filter"></i></button>
-				<button type="button" data-action="{{ shipping }}" id="button-shipping" data-form="#order-form" formtarget="_blank" data-bs-toggle="tooltip" title="{{ button_shipping_print }}" class="btn btn-info"><i class="fas fa-truck"></i></button>
-				<button type="button" data-action="{{ invoice }}" id="button-invoice" data-form="#order-form" formtarget="_blank" data-bs-toggle="tooltip" title="{{ button_invoice_print }}" class="btn btn-info"><i class="fas fa-print"></i></button>
+				<button type="button" data-oc-action="{{ shipping }}" id="button-shipping" data-oc-form="#order-form" formtarget="_blank" data-bs-toggle="tooltip" title="{{ button_shipping_print }}" class="btn btn-info"><i class="fas fa-truck"></i></button>
+				<button type="button" data-oc-action="{{ invoice }}" id="button-invoice" data-oc-form="#order-form" formtarget="_blank" data-bs-toggle="tooltip" title="{{ button_invoice_print }}" class="btn btn-info"><i class="fas fa-print"></i></button>
 				<a href="{{ add }}" data-bs-toggle="tooltip" title="{{ button_add }}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
-				<button type="button" data-action="{{ delete }}" data-form="#order-list" data-bs-toggle="tooltip" title="{{ button_delete }}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+				<button type="button" data-oc-action="{{ delete }}" data-oc-form="#order-list" data-bs-toggle="tooltip" title="{{ button_delete }}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
 			</div>
 			<h1>{{ heading_title }}</h1>
 			<ol class="breadcrumb">
@@ -23,14 +23,14 @@
 				<div class="card">
 					<div class="card-header"><i class="fas fa-filter"></i> {{ text_filter }}</div>
 					<div class="card-body">
-						<div class="form-group">
+						<div class="mb-3">
 							<label for="input-order-id" class="col-form-label">{{ entry_order_id }}</label> <input type="text" name="filter_order_id" value="{{ filter_order_id }}" placeholder="{{ entry_order_id }}" id="input-order-id" class="form-control"/>
 						</div>
-						<div class="form-group">
+						<div class="mb-3">
 							<label class="col-form-label">{{ entry_customer }}</label> <input type="text" name="filter_customer" value="{{ filter_customer }}" placeholder="{{ entry_customer }}" id="input-customer" class="form-control"/>
 						</div>
-						<div class="form-group">
-							<label for="input-store" class="col-form-label">{{ entry_store }}</label> <select name="filter_store_id" id="input-store" class="form-control">
+						<div class="mb-3">
+							<label for="input-store" class="col-form-label">{{ entry_store }}</label> <select name="filter_store_id" id="input-store" class="form-select">
 								<option value=""></option>
 								{% for store in stores %}
 									{% if store.store_id == filter_store_id %}
@@ -41,8 +41,8 @@
 								{% endfor %}
 							</select>
 						</div>
-						<div class="form-group">
-							<label for="input-order-status" class="col-form-label">{{ entry_order_status }}</label> <select name="filter_order_status_id" id="input-order-status" class="form-control">
+						<div class="mb-3">
+							<label for="input-order-status" class="col-form-label">{{ entry_order_status }}</label> <select name="filter_order_status_id" id="input-order-status" class="form-select">
 								<option value=""></option>
 								{% if filter_order_status_id == '0' %}
 									<option value="0" selected="selected">{{ text_missing }}</option>
@@ -58,28 +58,24 @@
 								{% endfor %}
 							</select>
 						</div>
-						<div class="form-group">
+						<div class="mb-3">
 							<label for="input-total" class="col-form-label">{{ entry_total }}</label> <input type="text" name="filter_total" value="{{ filter_total }}" placeholder="{{ entry_total }}" id="input-total" class="form-control"/>
 						</div>
-						<div class="form-group">
+						<div class="mb-3">
 							<label for="input-date-added" class="col-form-label">{{ entry_date_added }}</label>
 							<div class="input-group date">
 								<input type="text" name="filter_date_added" value="{{ filter_date_added }}" placeholder="{{ entry_date_added }}" id="input-date-added" class="form-control"/>
-								<div class="input-group-append">
-									<div class="input-group-text"><i class="fas fa-calendar"></i></div>
-								</div>
+								<div class="input-group-text"><i class="fas fa-calendar"></i></div>
 							</div>
 						</div>
-						<div class="form-group">
+						<div class="mb-3">
 							<label for="input-date-modified" class="col-form-label">{{ entry_date_modified }}</label>
 							<div class="input-group date">
 								<input type="text" name="filter_date_modified" value="{{ filter_date_modified }}" placeholder="{{ entry_date_modified }}" id="input-date-modified" class="form-control"/>
-								<div class="input-group-append">
-									<div class="input-group-text"><i class="fas fa-calendar"></i></div>
-								</div>
+								<div class="input-group-text"><i class="fas fa-calendar"></i></div>
 							</div>
 						</div>
-						<div class="text-right">
+						<div class="text-end">
 							<button type="button" id="button-filter" class="btn btn-light"><i class="fas fa-filter"></i> {{ button_filter }}</button>
 						</div>
 					</div>
@@ -212,7 +208,7 @@ $('#form-order a.delete').on('click', function(e) {
                 $('.alert-dismissible').remove();
 
                 if (json['error']) {
-                    $('#content > .container-fluid').prepend('<div class="alert alert-danger alert-dismissible"><i class="fas fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                    $('#content > .container-fluid').prepend('<div class="alert alert-danger alert-dismissible"><i class="fas fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="btn-close" data-bs-dismiss="alert">&times;</button></div>');
                 }
 
                 if (json['success']) {
