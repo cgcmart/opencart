@@ -6,7 +6,7 @@
 				{% if orders %}
 					<a href="{{ orders }}" data-bs-toggle="tooltip" title="{{ button_order }}" class="btn btn-warning"><i class="fas fa-receipt"></i></a>
 				{% endif %}
-				<button type="button" data-oc-action="{{ save }}" data-oc-form="#customer-form" data-bs-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fas fa-save"></i></button>
+				<button type="button" data-oc-action="{{ save }}" data-oc-form="#form-customer" data-bs-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fas fa-save"></i></button>
 				<a href="{{ back }}" data-bs-toggle="tooltip" title="{{ button_back }}" class="btn btn-light"><i class="fas fa-reply"></i></a></div>
 			<h1>{{ heading_title }}</h1>
 			<ol class="breadcrumb">
@@ -20,7 +20,7 @@
 		<div class="card">
 			<div class="card-header"><i class="fas fa-pencil-alt"></i> {{ text_form }}</div>
 			<div class="card-body">
-				<form id="customer-form">
+				<form id="form-customer">
 					<input type="hidden" name="customer_id" value="{{ customer_id }}" id="input-customer-id"/>
 					<ul class="nav nav-tabs">
 						<li class="nav-item"><a href="#tab-general" data-bs-toggle="tab" class="nav-link active">{{ tab_general }}</a></li>
@@ -162,7 +162,7 @@
 												<label class="col-sm-2 col-form-label">{{ custom_field.name }}</label>
 												<div class="col-sm-10">
 													<div id="input-custom-field-{{ custom_field.custom_field_id }}">
-														<button type="button" id="button-custom-field-{{ custom_field.custom_field_id }}" data-loading-text="{{ text_loading }}" class="btn btn-light"><i class="fas fa-upload"></i> {{ button_upload }}</button>
+														<button type="button" id="button-custom-field-{{ custom_field.custom_field_id }}" data-oc-loading-text="{{ text_loading }}" class="btn btn-light"><i class="fas fa-upload"></i> {{ button_upload }}</button>
 														<input type="hidden" name="custom_field[{{ custom_field.custom_field_id }}]" value="{{ account_custom_field[custom_field.custom_field_id] ? account_custom_field[custom_field.custom_field_id] }}"/>
 													</div>
 												</div>
@@ -419,7 +419,7 @@
 													<label class="col-sm-2 col-form-label">{{ custom_field.name }}</label>
 													<div class="col-sm-10">
 														<div id="input-address-{{ address_row }}-custom-field-{{ custom_field.custom_field_id }}">
-															<button type="button" id="button-custom-field-{{ address_row }}-{{ custom_field.custom_field_id }}" data-loading-text="{{ text_loading }}" class="btn btn-light"><i class="fas fa-upload"></i> {{ button_upload }}</button>
+															<button type="button" id="button-custom-field-{{ address_row }}-{{ custom_field.custom_field_id }}" data-oc-loading-text="{{ text_loading }}" class="btn btn-light"><i class="fas fa-upload"></i> {{ button_upload }}</button>
 															<input type="hidden" name="address[{{ address_row }}][custom_field][{{ custom_field.custom_field_id }}]" value="{{ address.custom_field[custom_field.custom_field_id] ? address.custom_field[custom_field.custom_field_id] }}"/>
 														</div>
 													</div>
@@ -496,7 +496,7 @@
 									</div>
 								</fieldset>
 								<div class="text-end">
-									<button id="button-history" data-loading-text="{{ text_loading }}" class="btn btn-primary"><i class="fas fa-plus-circle"></i> {{ button_history_add }}</button>
+									<button id="button-history" data-oc-loading-text="{{ text_loading }}" class="btn btn-primary"><i class="fas fa-plus-circle"></i> {{ button_history_add }}</button>
 								</div>
 							</div>
 							<div id="tab-transaction" class="tab-pane">
@@ -521,7 +521,7 @@
 									</div>
 								</fieldset>
 								<div class="text-end">
-									<button type="button" id="button-transaction" data-loading-text="{{ text_loading }}" class="btn btn-primary"><i class="fas fa-plus-circle"></i> {{ button_transaction_add }}</button>
+									<button type="button" id="button-transaction" data-oc-loading-text="{{ text_loading }}" class="btn btn-primary"><i class="fas fa-plus-circle"></i> {{ button_transaction_add }}</button>
 								</div>
 							</div>
 							<div id="tab-reward" class="tab-pane">
@@ -547,7 +547,7 @@
 									</div>
 								</fieldset>
 								<div class="text-end">
-									<button type="button" id="button-reward" data-loading-text="{{ text_loading }}" class="btn btn-primary"><i class="fas fa-plus-circle"></i> {{ button_reward_add }}</button>
+									<button type="button" id="button-reward" data-oc-loading-text="{{ text_loading }}" class="btn btn-primary"><i class="fas fa-plus-circle"></i> {{ button_reward_add }}</button>
 								</div>
 							</div>
 						{% endif %}
@@ -726,7 +726,7 @@ $('#button-address').on('click', function(e) {
     html += '		  <label class="col-sm-2 col-form-label">{{ custom_field.name|e('js') }}</label>';
     html += '		  <div class="col-sm-10">';
     html += '		    <div id="input-address-' + address_row + '-custom-field-{{ custom_field.custom_field_id }}">';
-    html += '		      <button type="button" id="button-custom-field-' + address_row + '-{{ custom_field.custom_field_id }}" data-loading-text="{{ text_loading }}" class="btn btn-light"><i class="fas fa-upload"></i> {{ button_upload }}</button>';
+    html += '		      <button type="button" id="button-custom-field-' + address_row + '-{{ custom_field.custom_field_id }}" data-oc-loading-text="{{ text_loading }}" class="btn btn-light"><i class="fas fa-upload"></i> {{ button_upload }}</button>';
     html += '		      <input type="hidden" name="address[' + address_row + '][{{ custom_field.custom_field_id }}]" value=""/>';
     html += '		    </div>';
     html += '		  </div>';
@@ -1044,7 +1044,7 @@ $('#content').on('click', 'button[id^=\'button-custom-field\']', function() {
 
     $('#upload-form').remove();
 
-    $('body').prepend('<form enctype="multipart/form-data" id="upload-form" style="display: none;"><input type="file" name="file" /></form>');
+    $('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
 
     $('#upload-form input[name=\'file\']').trigger('click');
 
