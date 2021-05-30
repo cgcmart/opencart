@@ -406,6 +406,16 @@ $(document).on('click', '[data-oc-action]', function() {
 
 			console.log(json);
 
+			console.log(Array.isArray(json['error']));
+
+			if (json['redirect']) {
+				location = json['redirect'];
+
+				// Not sure this part works
+				delete json['redirect'];
+			}
+
+
 			if (typeof json['error'] == 'object') {
 				if (json['error']['warning']) {
 					$('.breadcrumb').after('<div class="alert alert-danger alert-dismissible"><i class="fas fa-exclamation-circle"></i> ' + json['error']['warning'] + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
@@ -445,13 +455,6 @@ $(document).on('click', '[data-oc-action]', function() {
 				}
 
 				delete json['success'];
-			}
-
-			if (json['redirect']) {
-				location = json['redirect'];
-
-				// Not sure this part works
-				delete json['redirect'];
 			}
 
 			for (key in json) {

@@ -241,7 +241,7 @@ class Returns extends \Opencart\System\Engine\Controller {
 
 		$this->session->data['return_token'] = substr(bin2hex(openssl_random_pseudo_bytes(26)), 0, 26);
 
-		$data['action'] = $this->url->link('account/returns|add', 'language=' . $this->config->get('config_language') . '&return_token=' . $this->session->data['return_token']);
+		$data['save'] = $this->url->link('account/returns|save', 'language=' . $this->config->get('config_language') . '&return_token=' . $this->session->data['return_token']);
 
 		$this->load->model('account/returns');
 
@@ -321,7 +321,7 @@ class Returns extends \Opencart\System\Engine\Controller {
 		$extension_info = $this->model_setting_extension->getExtensionByCode('captcha', $this->config->get('config_captcha'));
 
 		if ($extension_info && $this->config->get('captcha_' . $this->config->get('config_captcha') . '_status') && in_array('return', (array)$this->config->get('config_captcha_page'))) {
-			$data['captcha'] = $this->load->controller('extension/'  . $extension_info['extension'] . '/captcha/' . $extension_info['code'], $this->error);
+			$data['captcha'] = $this->load->controller('extension/'  . $extension_info['extension'] . '/captcha/' . $extension_info['code']);
 		} else {
 			$data['captcha'] = '';
 		}
@@ -352,8 +352,10 @@ class Returns extends \Opencart\System\Engine\Controller {
 		$this->response->setOutput($this->load->view('account/return_form', $data));
 	}
 
-	protected function save(): bool {
+	public function save(): void {
 		$this->load->language('account/return');
+
+		$json = [];
 
 		$keys = [
 			'order_id',
@@ -433,9 +435,9 @@ class Returns extends \Opencart\System\Engine\Controller {
 		}
 
 		if (!$json) {
-			$this->load->model('account/return');
+			$this->load->model('account/returns');
 
-			$this->model_account_return->addReturn($this->request->post);
+			$this->model_account_returns->addReturn($this->request->post);
 
 			$json['redirect'] = $this->url->link('account/returns|success', 'language=' . $this->config->get('config_language'), true);
 		}

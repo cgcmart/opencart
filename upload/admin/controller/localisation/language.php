@@ -186,18 +186,19 @@ class Language extends \Opencart\System\Engine\Controller {
 			'href' => $this->url->link('localisation/language', 'user_token=' . $this->session->data['user_token'] . $url)
 		];
 
-		if (!isset($this->request->get['language_id'])) {
-			$data['save'] = $this->url->link('localisation/language|save', 'user_token=' . $this->session->data['user_token'] . $url);
-		} else {
-			$data['save'] = $this->url->link('localisation/language|save', 'user_token=' . $this->session->data['user_token'] . '&language_id=' . $this->request->get['language_id']);
-		}
-
+		$data['save'] = $this->url->link('localisation/language|save', 'user_token=' . $this->session->data['user_token'] . $url);
 		$data['back'] = $this->url->link('localisation/language', 'user_token=' . $this->session->data['user_token'] . $url);
 
 		if (isset($this->request->get['language_id'])) {
 			$this->load->model('localisation/language');
 
 			$language_info = $this->model_localisation_language->getLanguage($this->request->get['language_id']);
+		}
+
+		if (isset($this->request->get['language_id'])) {
+			$data['language_id'] = (int)$this->request->get['language_id'];
+		} else {
+			$data['language_id'] = 0;
 		}
 
 		if (!empty($language_info)) {
@@ -268,12 +269,12 @@ class Language extends \Opencart\System\Engine\Controller {
 		
 		$language_info = $this->model_localisation_language->getLanguageByCode($this->request->post['code']);
 
-		if (!isset($this->request->get['language_id'])) {
+		if (!$this->request->post['language_id']) {
 			if ($language_info) {
 				$json['error']['warning'] = $this->language->get('error_exists');
 			}
 		} else {
-			if ($language_info && ($this->request->get['language_id'] != $language_info['language_id'])) {
+			if ($language_info && ($this->request->post['language_id'] != $language_info['language_id'])) {
 				$json['error']['warning'] = $this->language->get('error_exists');
 			}
 		}
@@ -281,10 +282,10 @@ class Language extends \Opencart\System\Engine\Controller {
 		if (!$json) {
 			$this->load->model('localisation/language');
 
-			if (!isset($this->request->get['language_id'])) {
+			if (!$this->request->post['language_id']) {
 				$json['language_id'] = $this->model_localisation_language->addLanguage($this->request->post);
 			} else {
-				$this->model_localisation_language->editLanguage($this->request->get['language_id'], $this->request->post);
+				$this->model_localisation_language->editLanguage($this->request->post['language_id'], $this->request->post);
 			}
 
 			$json['success'] = $this->language->get('text_success');

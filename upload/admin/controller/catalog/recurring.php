@@ -184,18 +184,19 @@ class Recurring extends \Opencart\System\Engine\Controller {
 			'href' => $this->url->link('catalog/recurring', 'user_token=' . $this->session->data['user_token'] . $url)
 		];
 
-		if (!isset($this->request->get['recurring_id'])) {
-			$data['save'] = $this->url->link('catalog/recurring|save', 'user_token=' . $this->session->data['user_token'] . $url);
-		} else {
-			$data['save'] = $this->url->link('catalog/recurring|save', 'user_token=' . $this->session->data['user_token'] . '&recurring_id=' . $this->request->get['recurring_id']);
-		}
-
+		$data['save'] = $this->url->link('catalog/recurring|save', 'user_token=' . $this->session->data['user_token'] . $url);
 		$data['back'] = $this->url->link('catalog/recurring', 'user_token=' . $this->session->data['user_token'] . $url);
 
 		if (isset($this->request->get['recurring_id'])) {
 			$this->load->model('catalog/recurring');
 
 			$recurring_info = $this->model_catalog_recurring->getRecurring($this->request->get['recurring_id']);
+		}
+
+		if (isset($this->request->get['recurring_id'])) {
+			$data['recurring_id'] = (int)$this->request->get['recurring_id'];
+		} else {
+			$data['recurring_id'] = 0;
 		}
 
 		$this->load->model('localisation/language');
@@ -332,10 +333,10 @@ class Recurring extends \Opencart\System\Engine\Controller {
 		if (!$json) {
 			$this->load->model('catalog/recurring');
 
-			if (!isset($this->request->get['recurring_id'])) {
+			if (!$this->request->post['recurring_id']) {
 				$json['recurring_id'] = $this->model_catalog_recurring->addRecurring($this->request->post);
 			} else {
-				$this->model_catalog_recurring->editRecurring($this->request->get['recurring_id'], $this->request->post);
+				$this->model_catalog_recurring->editRecurring($this->request->post['recurring_id'], $this->request->post);
 			}
 
 			$json['success'] = $this->language->get('text_success');

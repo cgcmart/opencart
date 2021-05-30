@@ -424,18 +424,19 @@ class Returns extends \Opencart\System\Engine\Controller {
 			'href' => $this->url->link('sale/returns', 'user_token=' . $this->session->data['user_token'] . $url)
 		];
 
-		if (!isset($this->request->get['return_id'])) {
-			$data['save'] = $this->url->link('sale/returns|save', 'user_token=' . $this->session->data['user_token'] . $url);
-		} else {
-			$data['save'] = $this->url->link('sale/returns|save', 'user_token=' . $this->session->data['user_token'] . '&return_id=' . $this->request->get['return_id']);
-		}
-
+		$data['save'] = $this->url->link('sale/returns|save', 'user_token=' . $this->session->data['user_token'] . $url);
 		$data['back'] = $this->url->link('sale/returns', 'user_token=' . $this->session->data['user_token'] . $url);
 
 		if (isset($this->request->get['return_id'])) {
 			$this->load->model('sale/returns');
 
 			$return_info = $this->model_sale_returns->getReturn($this->request->get['return_id']);
+		}
+
+		if (isset($this->request->get['return_id'])) {
+			$data['return_id'] = (int)$this->request->get['return_id'];
+		} else {
+			$data['return_id'] = 0;
 		}
 
 		if (!empty($return_info)) {
@@ -609,10 +610,10 @@ class Returns extends \Opencart\System\Engine\Controller {
 		if (!$json) {
 			$this->load->model('sale/returns');
 
-			if (!isset($this->request->get['return_id'])) {
+			if (!$this->request->post['return_id']) {
 				$json['return_id'] = $this->model_sale_returns->addReturn($this->request->post);
 			} else {
-				$this->model_sale_returns->editReturn($this->request->get['return_id'], $this->request->post);
+				$this->model_sale_returns->editReturn($this->request->post['return_id'], $this->request->post);
 			}
 
 			$json['success'] = $this->language->get('text_success');
